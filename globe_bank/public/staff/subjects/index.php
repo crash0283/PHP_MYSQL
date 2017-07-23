@@ -21,7 +21,7 @@ require(SHARED_PATH . '/staff_header.php');
         <div class="subjects listing">
             <h1>Subjects</h1>
             <div class="actions">
-                <a class="action" href="">Create New Subjects</a>
+                <a class="action" href="<?php echo wwwRoot('/staff/subjects/new.php');  ?>">Create New Subjects</a>
             </div>
 
             <table class="list">
@@ -37,11 +37,11 @@ require(SHARED_PATH . '/staff_header.php');
                 <?php
                     foreach ($subjects as $subject) { ?>
                         <tr>
-                            <td><?php echo $subject['id']; ?></td>
-                            <td><?php echo $subject['position']; ?></td>
+                            <td><?php echo h($subject['id']); ?></td>
+                            <td><?php echo h($subject['position']); ?></td>
                             <td><?php echo $subject['visible'] == 1 ? 'true' : 'false'; ?></td>
-                            <td><?php echo $subject['menu_name']; ?></td>
-                            <td><a class="action" href="<?php echo wwwRoot('/staff/subjects/show.php?id=' . $subject['id']); ?>">View</a></td>
+                            <td><?php echo h($subject['menu_name']); ?></td>
+                            <td><a class="action" href="<?php echo wwwRoot('/staff/subjects/show.php?id=' . h(u($subject['id']))); ?>">View</a></td>
                             <td><a class="action" href="">Edit</a></td>
                             <td><a class="action" href="">Delete</a></td>
                         </tr>

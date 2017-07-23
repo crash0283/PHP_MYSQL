@@ -14,7 +14,7 @@
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <link rel="stylesheet" href="<?php echo wwwRoot('/css/staff.css');  ?>">
 <!--    We are using the page_title php variable that we created in the index.php file-->
-    <title>GBI - <?php echo $page_title; ?></title>
+    <title>GBI - <?php echo h($page_title); ?></title>
 </head>
 <body>
 <header>
