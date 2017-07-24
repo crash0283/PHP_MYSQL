@@ -2,7 +2,7 @@
 
 
 <?php
-
+    //Example of error testing
     $test = isset($_GET['test']) ? $_GET['test'] : '';
 
     if ($test == '404') {
@@ -23,7 +23,7 @@
 
     <div class="subject new">
         <h1>Create Subject</h1>
-        <form action="" method="post">
+        <form action="create.php" method="post">
             <dl>
                 <dt>Menu Name</dt>
                 <dd><input type="text" name="menu_name" value=""></dd>
@@ -49,3 +49,5 @@
         </form>
     </div>
 </div>
+
+<?php require_once(SHARED_PATH . '/staff_footer.php');  ?>

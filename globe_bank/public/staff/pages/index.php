@@ -20,7 +20,7 @@ require(SHARED_PATH . '/staff_header.php');
         <div class="pages listing">
             <h1>Pages</h1>
             <div class="actions">
-                <a class="action" href="">Create New Pages</a>
+                <a class="action" href="<?php echo wwwRoot('/staff/pages/new.php');  ?>">Create New Pages</a>
             </div>
         </div>
 
@@ -39,7 +39,7 @@ require(SHARED_PATH . '/staff_header.php');
                         <td><?php echo $page['visible'] == 1 ? true : false; ?></td>
                         <td><?php echo h($page['page-name']); ?></td>
                         <td><a class="action" href="<?php echo wwwRoot('/staff/pages/show.php?id=' . h(u($page['id'])));  ?>">View</a></td>
-                        <td><a class="action" href="">Edit</a></td>
+                        <td><a class="action" href="<?php echo wwwRoot('/staff/pages/edit.php?id=' . h(u($page['id'])));  ?>">Edit</a></td>
                         <td><a class="action" href="">Delete</a></td>
                     </tr>
                 <?php } ?>
