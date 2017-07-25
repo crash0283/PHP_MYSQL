@@ -1,13 +1,16 @@
+<?php require_once('../../../private/init.php') ?>
 <?php
-    $pages = [
-        ['id' => '1', 'position' => '1', 'visible' => '1', 'page-name' => 'Home'],
-        ['id' => '2', 'position' => '2', 'visible' => '1', 'page-name' => 'Online Banking'],
-        ['id' => '3', 'position' => '3', 'visible' => '1', 'page-name' => 'About Us'],
-        ['id' => '4', 'position' => '4', 'visible' => '1', 'page-name' => 'Contact'],
-    ];
+
+    $pages_set = find_all_pages($db);
+    //Used for database substitution
+//    $pages = [
+//        ['id' => '1', 'position' => '1', 'visible' => '1', 'page-name' => 'Home'],
+//        ['id' => '2', 'position' => '2', 'visible' => '1', 'page-name' => 'Online Banking'],
+//        ['id' => '3', 'position' => '3', 'visible' => '1', 'page-name' => 'About Us'],
+//        ['id' => '4', 'position' => '4', 'visible' => '1', 'page-name' => 'Contact'],
+//    ];
 ?>
 
-<?php require_once('../../../private/init.php') ?>
 <?php
     //Can set variables and import them as well to use in other files
     $page_title = 'Pages';
@@ -32,12 +35,12 @@ require(SHARED_PATH . '/staff_header.php');
                 <th>Page</th>
             </tr>
             <?php
-                foreach ($pages as $page) {?>
+                while ($page = mysqli_fetch_assoc($pages_set)) {?>
                     <tr>
                         <td><?php echo h($page['id']); ?></td>
                         <td><?php echo h($page['position']); ?></td>
                         <td><?php echo $page['visible'] == 1 ? true : false; ?></td>
-                        <td><?php echo h($page['page-name']); ?></td>
+                        <td><?php echo h($page['menu_name']); ?></td>
                         <td><a class="action" href="<?php echo wwwRoot('/staff/pages/show.php?id=' . h(u($page['id'])));  ?>">View</a></td>
                         <td><a class="action" href="<?php echo wwwRoot('/staff/pages/edit.php?id=' . h(u($page['id'])));  ?>">Edit</a></td>
                         <td><a class="action" href="">Delete</a></td>
@@ -45,6 +48,9 @@ require(SHARED_PATH . '/staff_header.php');
                 <?php } ?>
 
         </table>
+        <?php
+            mysqli_free_result($pages_set);
+        ?>
     </div>
 <?php
 //Bring in shared footer data
