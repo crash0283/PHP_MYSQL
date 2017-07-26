@@ -14,12 +14,12 @@
         return $result;
     }
 
-    function insert_subject($menu_name,$position,$visible) {
+    function insert_subject($subject) {
         global $db;
 
         $sql = "INSERT INTO subjects ";
         $sql .= "(menu_name,position,visible) ";
-        $sql .= "VALUES ('$menu_name','$visible','$position')";
+        $sql .= "VALUES ('{$subject['menu_name']}','{$subject['position']}','{$subject['visible']}')";
 
         $result = mysqli_query($db,$sql); //For INSERT statements, returns true/false
 
@@ -45,6 +45,21 @@
 
         if ($result) {
             redirect_to(wwwRoot('/staff/subjects/index.php'));
+            return true;
+        } else {
+            echo mysqli_error($db);
+            db_disconnect($db);
+            exit();
+        }
+    }
+
+    function delete_subject($id) {
+        //allow global scope $db to be brought into function
+        global $db;
+
+        $sql = "DELETE FROM subjects WHERE id='" . $id . "' LIMIT 1";
+        $query = mysqli_query($db,$sql);
+        if ($query) {
             return true;
         } else {
             echo mysqli_error($db);

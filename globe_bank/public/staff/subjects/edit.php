@@ -33,6 +33,11 @@ if (is_post_request()) {
 
 } else {
     $subject = find_subject_by_id($id,$db);  //returns an array
+
+    //Find how many rows are in our database
+    $subject_set = find_all_subjects($db);
+    $subject_count = mysqli_num_rows($subject_set);
+    mysqli_free_result($subject_set);
 }
 
 ?>
@@ -54,7 +59,16 @@ if (is_post_request()) {
                     <dt>Position</dt>
                     <dd>
                         <select name="position" id="">
-                            <option value="1"<?php if($subject['position'] == '1') echo 'selected'; ?>>1</option>
+                            <?php
+                                for ($i=1; $i<=$subject_count; $i++ ) {
+                                    echo "<option value='{$i}'";
+                                    if ($subject['position'] == $i) {
+                                        echo 'selected';
+                                    }
+                                    echo ">{$i}</option>";
+                                }
+
+                            ?>
                         </select>
                     </dd>
                 </dl>
