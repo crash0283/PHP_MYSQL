@@ -43,7 +43,7 @@ require(SHARED_PATH . '/staff_header.php');
                         <td><?php echo h($page['menu_name']); ?></td>
                         <td><a class="action" href="<?php echo wwwRoot('/staff/pages/show.php?id=' . h(u($page['id'])));  ?>">View</a></td>
                         <td><a class="action" href="<?php echo wwwRoot('/staff/pages/edit.php?id=' . h(u($page['id'])));  ?>">Edit</a></td>
-                        <td><a class="action" href="">Delete</a></td>
+                        <td><a class="action" href="<?php echo wwwRoot('/staff/pages/delete.php?id=' . h(u($page['id']))); ?>">Delete</a></td>
                     </tr>
                 <?php } ?>
 

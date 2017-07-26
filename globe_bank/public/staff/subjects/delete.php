@@ -7,13 +7,15 @@
 
     $id = $_GET['id'];
 
-    $subject = find_subject_by_id($id,$db);
+
 
     if (is_post_request()) {
         //use function
         delete_subject($id);
         redirect_to(wwwRoot('/staff/subjects/index.php'));
 
+    } else {
+        $subject = find_subject_by_id($id,$db);
     }
 
     $page_title = 'Delete Subject';

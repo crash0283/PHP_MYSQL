@@ -6,20 +6,23 @@
     $page_title = 'Create Page';
     include(SHARED_PATH . '/staff_header.php');
 
-    //Initialize variables to empty string
-    $menu_name = '';
-    $position = '';
-    $visible = '';
+    $page_set = find_all_pages($db);
+    $page_count = mysqli_num_rows($page_set) + 1;
+    mysqli_free_result($page_set);
+
+    $page = [];
+    $page['position'] = $page_count;
 
     //Single Page Form Processing
     if (is_post_request()) {
-        $menu_name = isset($_POST['menu_name']) ? $_POST['menu_name'] : '';
-        $position = isset($_POST['position']) ? $_POST['position'] : '';
-        $visible = isset($_POST['visible']) ? $_POST['visible'] : '';
+        $page = [];
+        $page['menu_name'] = isset($_POST['menu_name']) ? $_POST['menu_name'] : '';
+        $page['position'] = isset($_POST['position']) ? $_POST['position'] : '';
+        $page['visible'] = isset($_POST['visible']) ? $_POST['visible'] : '';
 
-        echo 'Menu Name: '. $menu_name . '<br>';
-        echo 'Position: ' . $position . '<br>';
-        echo 'Visible: ' . $visible . '<br>';
+        insert_page($page);
+        $new_id = mysqli_insert_id($db);
+        redirect_to(wwwRoot('/staff/pages/show.php?id=' . $new_id));
     }
 ?>
 
@@ -30,13 +33,21 @@
         <form action="<?php echo wwwRoot('/staff/pages/new.php');  ?>" method="post">
             <dl>
                 <dt>Menu Name</dt>
-                <dd><input type="text" name="menu_name" value="<?php echo $menu_name; ?>"></dd>
+                <dd><input type="text" name="menu_name" value=""></dd>
             </dl>
             <dl>
                 <dt>Position</dt>
                 <dd>
                     <select name="position" id="">
-                        <option value="1">1</option>
+                        <?php
+                            for ($i=1; $i<=$page_count; $i++) {
+                                echo "<option value='{$i}'";
+                                if ($page['position'] == $i) {
+                                    echo "selected";
+                                }
+                                echo ">{$i}</option>";
+                            }
+                        ?>
                     </select>
                 </dd>
             </dl>
