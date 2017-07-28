@@ -20,9 +20,15 @@
         $page['position'] = isset($_POST['position']) ? $_POST['position'] : '';
         $page['visible'] = isset($_POST['visible']) ? $_POST['visible'] : '';
 
-        insert_page($page);
-        $new_id = mysqli_insert_id($db);
-        redirect_to(wwwRoot('/staff/pages/show.php?id=' . $new_id));
+        $result = insert_page($page);
+
+        if ($result === true) {
+            $new_id = mysqli_insert_id($db);
+            redirect_to(wwwRoot('/staff/pages/show.php?id=' . $new_id));
+        } else {
+            $errors = $result;
+        }
+
     }
 ?>
 
@@ -30,6 +36,7 @@
     <a class="back_link" href="<?php echo wwwRoot('/staff/pages/index.php');  ?>">&laquo; Back to menu</a>
     <div class="page new">
         <h1>Create Page</h1>
+        <?php echo display_errors($errors);  ?>
         <form action="<?php echo wwwRoot('/staff/pages/new.php');  ?>" method="post">
             <dl>
                 <dt>Menu Name</dt>

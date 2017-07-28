@@ -20,24 +20,30 @@
         $page['visible'] = isset($_POST['visible']) ? $_POST['visible'] : '';
         $page['id'] = $id;
 
-        update_page($page);
+        $result = update_page($page);
+
+        if ($result === true) {
+            redirect_to(wwwRoot('/staff/pages/index.php'));
+        } else {
+            $errors = $result;
+        }
 
 
     } else {
         $page = find_pages_by_id($id,$db);
-
-        $page_set = find_all_pages($db);
-        $page_count = mysqli_num_rows($page_set);
-        mysqli_free_result($page_set);
-
     }
+
+    $page_set = find_all_pages($db);
+    $page_count = mysqli_num_rows($page_set);
+    mysqli_free_result($page_set);
 
 ?>
 
 <div id="content">
     <a class="back_link" href="<?php echo wwwRoot('/staff/pages/index.php');  ?>">&laquo; Back to menu</a>
     <div class="page new">
-        <h1>Edit <?php echo $page['menu_name'];  ?></h1>
+        <h1>Edit Page</h1>
+        <?php echo display_errors($errors); ?>
         <form action="<?php echo wwwRoot('/staff/pages/edit.php?id=' . $id);  ?>" method="post">
             <dl>
                 <dt>Menu Name</dt>

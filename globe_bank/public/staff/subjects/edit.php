@@ -32,6 +32,7 @@ if (is_post_request()) {
 
     //update record
     $result = update_subject($subject);
+
     if ($result === true) {
         redirect_to(wwwRoot('/staff/subjects/index.php'));
     } else {

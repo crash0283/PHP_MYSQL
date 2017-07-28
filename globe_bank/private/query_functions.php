@@ -59,6 +59,7 @@
         //visible
         //Make sure we are working with a string
         $visible_str = (string) $subject['visible'];
+
         if (!has_inclusion_of($visible_str,["0","1"])) {
             $errors[] = "Visible must be true or false!";
         }
@@ -167,8 +168,46 @@
     return $page;
 }
 
+    function validate_page($page) {
+        $errors = [];
+
+        //menu_name
+        if (is_blank($page['menu_name'])) {
+            $errors[] = 'Name cannot be blank!';
+        }
+        elseif (!has_length($page['menu_name'], ['min'=>2, 'max'=>255])) {
+            $errors[] = 'Name must be between 2 and 255 characters!';
+        }
+
+        //position
+        //Make sure we are working with int
+        $pos_int = (int) $page['position'];
+        if ($pos_int <= 0) {
+            $errors[] = 'Position must be greater than zero!';
+        }
+        if ($pos_int > 255) {
+            $errors[] = 'Position must be less than 255!';
+        }
+
+        //visible
+        //Make sure we are working with sting
+        $vis_str = (string) $page['visible'];
+        if (!has_inclusion_of($vis_str,['0','1']) ) {
+            $errors[] = 'Visible must be true or false!';
+        }
+
+        return $errors;
+
+    }
+
     function insert_page($page) {
         global $db;
+
+        //Validate
+        $errors = validate_page($page);
+        if (!empty($errors)) {
+            return $errors;
+        }
 
         $sql = "INSERT INTO pages (menu_name,position,visible) ";
         $sql .= "VALUES ('{$page['menu_name']}','{$page['position']}','{$page['visible']}')";
@@ -187,6 +226,13 @@
 
     function update_page($page) {
         global $db;
+
+        //Validate
+        $errors = validate_page($page);
+
+        if (!empty($errors)) {
+            return $errors;
+        }
 
         $sql = "UPDATE pages SET ";
         $sql .= "menu_name='" . $page['menu_name'] . "', ";
