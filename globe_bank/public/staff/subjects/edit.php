@@ -6,6 +6,7 @@
 //Set ID
 $id = $_GET['id'];
 
+
 //$test = isset($_GET['test']) ? $_GET['test'] : '';
 
 
@@ -28,17 +29,26 @@ if (is_post_request()) {
     $subject['position'] = isset($_POST['position']) ? $_POST['position'] : '';
     $subject['id'] = $id;
 
+
     //update record
-    update_subject($subject);
+    $result = update_subject($subject);
+    if ($result === true) {
+        redirect_to(wwwRoot('/staff/subjects/index.php'));
+    } else {
+        $errors = $result;
+
+        //Used to debug
+        //var_dump($errors);
+    }
 
 } else {
     $subject = find_subject_by_id($id,$db);  //returns an array
-
-    //Find how many rows are in our database
-    $subject_set = find_all_subjects($db);
-    $subject_count = mysqli_num_rows($subject_set);
-    mysqli_free_result($subject_set);
 }
+
+//Find how many rows are in our database
+$subject_set = find_all_subjects($db);
+$subject_count = mysqli_num_rows($subject_set);
+mysqli_free_result($subject_set);
 
 ?>
 
@@ -50,6 +60,7 @@ if (is_post_request()) {
 
         <div class="subject edit">
             <h1>Edit Subject</h1>
+            <?php echo display_errors($errors);  //adding function to display all errors ?>
             <form action="<?php echo wwwRoot('/staff/subjects/edit.php?id=' . h(u($id)));  ?>" method="post">
                 <dl>
                     <dt>Menu Name</dt>

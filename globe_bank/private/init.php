@@ -15,7 +15,10 @@
     require_once('functions.php');
     require_once('database.php');
     require_once('query_functions.php');
+    require_once('validation_functions.php');
 
     //Load and connect to database on all pages that have the init.php file imported
     //Also have the variable $db available to work with
     $db = db_connect();
+    //Set $errors
+    $errors = [];

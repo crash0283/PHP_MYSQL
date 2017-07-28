@@ -26,6 +26,23 @@
 //        redirect_to(wwwRoot('/staff/subjects/index.php'));
 //    }
 
+if (is_post_request()) {
+    //Handle form values sent by new.php
+    $subject = [];
+    $subject['menu_name'] = isset($_POST['menu_name']) ? $_POST['menu_name'] : '';
+    $subject['visible'] = isset($_POST['visible']) ? $_POST['visible'] : '';
+    $subject['position'] = isset($_POST['position']) ? $_POST['position'] : '';
+
+    //Use this function to create new subject
+    $result = insert_subject($subject);
+
+    if ($result === true) {
+        $new_id = mysqli_insert_id($db);
+        redirect_to(wwwRoot('/staff/subjects/show.php?id=' . $new_id));
+    } else {
+        $errors = $result;
+    }
+}
 ?>
 
 <?php $page_title = 'Create Subject';  ?>
@@ -36,7 +53,8 @@
 
     <div class="subject new">
         <h1>Create Subject</h1>
-        <form action="create.php" method="post">
+        <?php echo display_errors($errors);  ?>
+        <form action="new.php" method="post">
             <dl>
                 <dt>Menu Name</dt>
                 <dd><input type="text" name="menu_name" value=""></dd>

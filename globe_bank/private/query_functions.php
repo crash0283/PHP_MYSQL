@@ -14,8 +14,70 @@
         return $result;
     }
 
+    function find_subject_by_id($id,$db) {
+    //Create SQL SELECT and don't forget to put single quotes around query variable ($id)
+    $sql = "SELECT * FROM subjects ";
+    $sql .= "WHERE id='" . $id ."'";
+
+    //Get result set
+    $result = mysqli_query($db,$sql);
+
+    //Error check to make sure we get set back
+    confirm_result_set($result);
+
+    //Get Associative Array
+    $subject = mysqli_fetch_assoc($result);
+
+    //Free data set since it's stored in the $subject variable as an array now
+    mysqli_free_result($result);
+
+    return $subject;
+}
+
+    function validate_subject($subject) {
+        $errors = [];
+
+        //menu name
+        if (is_blank($subject['menu_name'])) {
+            //$errors[] adds value to end of array
+            $errors[] = "Name cannot be blank!";
+        }
+        elseif (!has_length($subject['menu_name'],['min'=>2,'max'=>255])) {
+            $errors[] = "Name must be between 2 and 255 characters!";
+        }
+
+        //position
+        //Make sure we are working with an integer
+        $position_int = (int) $subject['position'];
+        if ($position_int <= 0) {
+            $errors[] = "Position must be greater than zero!";
+        }
+        if($position_int > 999) {
+            $errors[] = "Position must be less than 999!";
+        }
+
+        //visible
+        //Make sure we are working with a string
+        $visible_str = (string) $subject['visible'];
+        if (!has_inclusion_of($visible_str,["0","1"])) {
+            $errors[] = "Visible must be true or false!";
+        }
+
+        return $errors;
+
+    }
+
     function insert_subject($subject) {
         global $db;
+
+        //Validate
+        $errors = validate_subject($subject);
+
+        //If there were errors do this
+        if (!empty($errors)) {
+            //By using return here, if there are errors this function will just return the errors and won't execute the sql code
+            return $errors;
+        }
 
         $sql = "INSERT INTO subjects ";
         $sql .= "(menu_name,position,visible) ";
@@ -35,6 +97,15 @@
     function update_subject($subject) {
         global $db;
 
+        //Validate
+        $errors = validate_subject($subject);
+
+        //If there were errors do this
+        if (!empty($errors)) {
+            //By using return here, if there are errors this function will just return the errors and won't execute the sql code
+            return $errors;
+        }
+
         $sql = "UPDATE subjects SET ";
         $sql .= "menu_name='" . $subject['menu_name'] . "', ";
         $sql .= "position='" . $subject['position'] . "', ";
@@ -44,7 +115,6 @@
         $result = mysqli_query($db,$sql);
 
         if ($result) {
-            redirect_to(wwwRoot('/staff/subjects/index.php'));
             return true;
         } else {
             echo mysqli_error($db);
@@ -66,26 +136,6 @@
             db_disconnect($db);
             exit();
         }
-    }
-
-    function find_subject_by_id($id,$db) {
-        //Create SQL SELECT and don't forget to put single quotes around query variable ($id)
-        $sql = "SELECT * FROM subjects ";
-        $sql .= "WHERE id='" . $id ."'";
-
-        //Get result set
-        $result = mysqli_query($db,$sql);
-
-        //Error check to make sure we get set back
-        confirm_result_set($result);
-
-        //Get Associative Array
-        $subject = mysqli_fetch_assoc($result);
-
-        //Free data set since it's stored in the $subject variable as an array now
-        mysqli_free_result($result);
-
-        return $subject;
     }
 
     function find_all_pages($db) {
