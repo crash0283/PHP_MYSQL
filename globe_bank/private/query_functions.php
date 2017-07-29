@@ -17,8 +17,8 @@
     function find_subject_by_id($id,$db) {
     //Create SQL SELECT and don't forget to put single quotes around query variable ($id)
     $sql = "SELECT * FROM subjects ";
-    $sql .= "WHERE id='" . $id ."'";
-
+    $sql .= "WHERE id='" . db_escape($db,$id) ."'";
+    //echo $sql;
     //Get result set
     $result = mysqli_query($db,$sql);
 
@@ -82,7 +82,7 @@
 
         $sql = "INSERT INTO subjects ";
         $sql .= "(menu_name,position,visible) ";
-        $sql .= "VALUES ('{$subject['menu_name']}','{$subject['position']}','{$subject['visible']}')";
+        $sql .= "VALUES ('" . db_escape($db,$subject['menu_name']) ."','" . db_escape($db,$subject['position']) . "','" . db_escape($db,$subject['visible']) ."')";
 
         $result = mysqli_query($db,$sql); //For INSERT statements, returns true/false
 
@@ -108,10 +108,10 @@
         }
 
         $sql = "UPDATE subjects SET ";
-        $sql .= "menu_name='" . $subject['menu_name'] . "', ";
-        $sql .= "position='" . $subject['position'] . "', ";
-        $sql .= "visible='" . $subject['visible'] . "' ";
-        $sql .= "WHERE id='" . $subject['id'] . "'";
+        $sql .= "menu_name='" . db_escape($db,$subject['menu_name']) . "', ";
+        $sql .= "position='" . db_escape($db,$subject['position']) . "', ";
+        $sql .= "visible='" . db_escape($db,$subject['visible']) . "' ";
+        $sql .= "WHERE id='" . db_escape($db,$subject['id']) . "'";
 
         $result = mysqli_query($db,$sql);
 
@@ -128,7 +128,7 @@
         //allow global scope $db to be brought into function
         global $db;
 
-        $sql = "DELETE FROM subjects WHERE id='" . $id . "' LIMIT 1";
+        $sql = "DELETE FROM subjects WHERE id='" . db_escape($db,$id) . "' LIMIT 1";
         $query = mysqli_query($db,$sql);
         if ($query) {
             return true;
@@ -151,7 +151,7 @@
     function find_pages_by_id($id,$db) {
     //Create SQL SELECT and don't forget to put single quotes around query variable ($id)
     $sql = "SELECT * FROM pages ";
-    $sql .= "WHERE id='" . $id ."'";
+    $sql .= "WHERE id='" . db_escape($db,$id) ."'";
 
     //Get result set
     $result = mysqli_query($db,$sql);
@@ -210,7 +210,7 @@
         }
 
         $sql = "INSERT INTO pages (menu_name,position,visible) ";
-        $sql .= "VALUES ('{$page['menu_name']}','{$page['position']}','{$page['visible']}')";
+        $sql .= "VALUES ('" . db_escape($db,$page['menu_name']) ."','" . db_escape($db,$page['position']) . "','" . db_escape($db,$page['visible']) . "')";
 
         $query = mysqli_query($db,$sql);
 
@@ -235,10 +235,10 @@
         }
 
         $sql = "UPDATE pages SET ";
-        $sql .= "menu_name='" . $page['menu_name'] . "', ";
-        $sql .= "position='" . $page['position'] . "', ";
-        $sql .= "visible='" . $page['visible'] . "' ";
-        $sql .= "WHERE id='" . $page['id'] . "'";
+        $sql .= "menu_name='" . db_escape($db,$page['menu_name']) . "', ";
+        $sql .= "position='" . db_escape($db,$page['position']) . "', ";
+        $sql .= "visible='" . db_escape($db,$page['visible']) . "' ";
+        $sql .= "WHERE id='" . db_escape($db,$page['id']) . "'";
 
         $query = mysqli_query($db,$sql);
 
@@ -258,7 +258,7 @@
     function delete_page($id) {
         global $db;
 
-        $sql = "DELETE FROM pages WHERE id='" . $id . "' LIMIT 1";
+        $sql = "DELETE FROM pages WHERE id='" . db_escape($db,$id) . "' LIMIT 1";
         $query = mysqli_query($db,$sql);
         if ($query) {
             return true;

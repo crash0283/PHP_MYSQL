@@ -18,6 +18,11 @@
         }
     }
 
+    //Function for escaping SQL Injection
+    function db_escape($connection,$string) {
+        return mysqli_real_escape_string($connection,$string);
+    }
+
     //Error checking function to see if we have connection
     function confirm_db_connect() {
         //Test if connection successful
