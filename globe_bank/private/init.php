@@ -10,7 +10,7 @@
     define('SHARED_PATH', PRIVATE_PATH . '/shared');
 
     //Create constant for absolute path
-    define('WWW_ROOT', '/PHP_MYSQL/globe_bank/public');
+    define('WWW_ROOT', '/PHP_MYSQL_Part_1/globe_bank/public');
 
     require_once('functions.php');
     require_once('database.php');
