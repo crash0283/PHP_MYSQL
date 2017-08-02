@@ -19,6 +19,7 @@
         $page['menu_name'] = isset($_POST['menu_name']) ? $_POST['menu_name'] : '';
         $page['position'] = isset($_POST['position']) ? $_POST['position'] : '';
         $page['visible'] = isset($_POST['visible']) ? $_POST['visible'] : '';
+        $page['content'] = isset($_POST['content']) ? $_POST['content'] : '';
 
         $result = insert_page($page);
 
@@ -62,6 +63,10 @@
                 <dt>Visible</dt>
                 <dd><input type="hidden" name="visible" value="0"></dd>
                 <dd><input type="checkbox" name="visible" value="1"></dd>
+            </dl>
+            <dl>
+                <dt>Content</dt>
+                <dd><textarea name="content" id="" cols="80" rows="10"></textarea></dd>
             </dl>
             <div id="operations">
                 <input type="submit" value="Create Subject">

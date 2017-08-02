@@ -209,8 +209,8 @@
             return $errors;
         }
 
-        $sql = "INSERT INTO pages (menu_name,position,visible) ";
-        $sql .= "VALUES ('" . db_escape($db,$page['menu_name']) ."','" . db_escape($db,$page['position']) . "','" . db_escape($db,$page['visible']) . "')";
+        $sql = "INSERT INTO pages (menu_name,position,visible,content) ";
+        $sql .= "VALUES ('" . db_escape($db,$page['menu_name']) ."','" . db_escape($db,$page['position']) . "','" . db_escape($db,$page['visible']) . "','" . db_escape($db,$page['content']) . "')";
 
         $query = mysqli_query($db,$sql);
 
@@ -237,7 +237,8 @@
         $sql = "UPDATE pages SET ";
         $sql .= "menu_name='" . db_escape($db,$page['menu_name']) . "', ";
         $sql .= "position='" . db_escape($db,$page['position']) . "', ";
-        $sql .= "visible='" . db_escape($db,$page['visible']) . "' ";
+        $sql .= "visible='" . db_escape($db,$page['visible']) . "', ";
+        $sql .= "content='" . db_escape($db,$page['content']) . "' ";
         $sql .= "WHERE id='" . db_escape($db,$page['id']) . "'";
 
         $query = mysqli_query($db,$sql);
@@ -267,6 +268,24 @@
             db_disconnect($db);
             exit();
         }
+    }
+
+    function find_pages_by_subject_id($subject_id) {
+        global $db;
+
+        //Create SQL SELECT and don't forget to put single quotes around query variable ($id)
+        $sql = "SELECT * FROM pages ";
+        $sql .= "WHERE subject_id='" . db_escape($db,$subject_id) ."' ";
+        $sql .= "ORDER BY position ASC";
+
+        //Get result set
+        $result = mysqli_query($db,$sql);
+
+        //Error check to make sure we get set back
+        confirm_result_set($result);
+
+
+        return $result;
     }
 
 

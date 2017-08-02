@@ -47,6 +47,10 @@ include(PRIVATE_PATH . '/shared/staff_header.php');
                 <dt>Visible</dt>
                 <dd><?php echo h($page['visible']);  ?></dd>
             </dl>
+            <dl>
+                <dt>Content</dt>
+                <dd><?php echo h($page['content']);  ?></dd>
+            </dl>
         </div>
     </div>
 </div>

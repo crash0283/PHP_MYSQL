@@ -4,6 +4,7 @@
     }
 
     function h($string) {
+        //Escapes any special charcters in string and prevents cross-site scripting
         return htmlspecialchars($string);
     }
 
