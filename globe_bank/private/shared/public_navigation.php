@@ -2,17 +2,20 @@
     //Default values to prevent errors
     $page_id = $page_id ?? '';
     $subject_id = $subject_id ?? '';
+    $visible = $visible ?? true;
 ?>
 
 <nav>
-    <?php $nav_subjects = find_all_subjects($db);  ?>
+    <?php $nav_subjects = find_all_subjects($db,['visible'=>$visible]);  ?>
     <ul class="subjects">
         <?php while($nav_subject = mysqli_fetch_assoc($nav_subjects)) { ?>
         <li class="<?php if ($nav_subject['id'] == $subject_id) {echo 'selected';}  ?>">
-            <a href="<?php echo wwwRoot('/index.php');  ?>">
+            <a href="<?php echo wwwRoot('/index.php?subject_id=' . h(u($nav_subject['id'])));  ?>">
                 <?php echo h($nav_subject['menu_name']);  ?>
             </a>
-            <?php $nav_pages = find_pages_by_subject_id($nav_subject['id']);  ?>
+
+            <?php if ($nav_subject['id'] == $subject_id) { ?>
+            <?php $nav_pages = find_pages_by_subject_id($nav_subject['id'],['visible'=>$visible]);  ?>
             <ul class="pages">
                 <?php while($nav_page = mysqli_fetch_assoc($nav_pages)) { ?>
                     <li class="<?php if($nav_page['id'] == $page_id) {echo 'selected';}  ?>">
@@ -23,6 +26,7 @@
                 <?php } //end while loop  ?>
             </ul>
             <?php mysqli_free_result($nav_pages);  ?>
+            <?php } //if ($nav_subject['id'] == $subject_id) ?>
         </li>
         <?php } //end while loop  ?>
     </ul>

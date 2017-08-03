@@ -1,9 +1,18 @@
 <?php
 
-    function find_all_subjects($db) {
+    function find_all_subjects($db,$options=[]) {
+        //Add optional array of attributes to look for
+        $visible = $options['visible'] ?? false;
+
+
         //Read data from subjects database table
         // .= will concatenate long MySQL sequences
         $sql = "SELECT * FROM subjects ";
+
+
+        if ($visible) {
+            $sql .= "WHERE visible = true ";
+        }
         $sql .= "ORDER BY position ASC";
 
         //Get result
@@ -14,24 +23,29 @@
         return $result;
     }
 
-    function find_subject_by_id($id,$db) {
-    //Create SQL SELECT and don't forget to put single quotes around query variable ($id)
-    $sql = "SELECT * FROM subjects ";
-    $sql .= "WHERE id='" . db_escape($db,$id) ."'";
-    //echo $sql;
-    //Get result set
-    $result = mysqli_query($db,$sql);
+    function find_subject_by_id($id,$db,$options=[]) {
+        $visible = $options['visible'] ?? false;
 
-    //Error check to make sure we get set back
-    confirm_result_set($result);
+        //Create SQL SELECT and don't forget to put single quotes around query variable ($id)
+        $sql = "SELECT * FROM subjects ";
+        $sql .= "WHERE id='" . db_escape($db,$id) ."' ";
+        if ($visible) {
+            $sql .= "AND visible=true";
+        }
+        //echo $sql;
+        //Get result set
+        $result = mysqli_query($db,$sql);
 
-    //Get Associative Array
-    $subject = mysqli_fetch_assoc($result);
+        //Error check to make sure we get set back
+        confirm_result_set($result);
 
-    //Free data set since it's stored in the $subject variable as an array now
-    mysqli_free_result($result);
+        //Get Associative Array
+        $subject = mysqli_fetch_assoc($result);
 
-    return $subject;
+        //Free data set since it's stored in the $subject variable as an array now
+        mysqli_free_result($result);
+
+        return $subject;
 }
 
     function validate_subject($subject) {
@@ -141,31 +155,36 @@
 
     function find_all_pages($db) {
         $sql = "SELECT * FROM pages ";
-        $sql .= "ORDER BY position ASC";
+        $sql .= "ORDER BY id ASC";
 
         $result = mysqli_query($db,$sql);
         confirm_result_set($result);
         return $result;
     }
 
-    function find_pages_by_id($id,$db) {
-    //Create SQL SELECT and don't forget to put single quotes around query variable ($id)
-    $sql = "SELECT * FROM pages ";
-    $sql .= "WHERE id='" . db_escape($db,$id) ."'";
+    function find_pages_by_id($id,$db,$options=[]) {
+        $visible = $options['visible'] ?? false;
 
-    //Get result set
-    $result = mysqli_query($db,$sql);
+        //Create SQL SELECT and don't forget to put single quotes around query variable ($id)
+        $sql = "SELECT * FROM pages ";
+        $sql .= "WHERE id='" . db_escape($db,$id) ."' ";
 
-    //Error check to make sure we get set back
-    confirm_result_set($result);
+        if ($visible) {
+            $sql .= "AND visible=true";
+        }
+        //Get result set
+        $result = mysqli_query($db,$sql);
 
-    //Get Associative Array
-    $page = mysqli_fetch_assoc($result);
+        //Error check to make sure we get set back
+        confirm_result_set($result);
 
-    //Free data set since it's stored in the $subject variable as an array now
-    mysqli_free_result($result);
+        //Get Associative Array
+        $page = mysqli_fetch_assoc($result);
 
-    return $page;
+        //Free data set since it's stored in the $subject variable as an array now
+        mysqli_free_result($result);
+
+        return $page;
 }
 
     function validate_page($page) {
@@ -209,8 +228,8 @@
             return $errors;
         }
 
-        $sql = "INSERT INTO pages (menu_name,position,visible,content) ";
-        $sql .= "VALUES ('" . db_escape($db,$page['menu_name']) ."','" . db_escape($db,$page['position']) . "','" . db_escape($db,$page['visible']) . "','" . db_escape($db,$page['content']) . "')";
+        $sql = "INSERT INTO pages (subject_id,menu_name,position,visible,content) ";
+        $sql .= "VALUES ('" . db_escape($db,$page['subject_id']) ."','" . db_escape($db,$page['menu_name']) ."','" . db_escape($db,$page['position']) . "','" . db_escape($db,$page['visible']) . "','" . db_escape($db,$page['content']) . "')";
 
         $query = mysqli_query($db,$sql);
 
@@ -270,12 +289,20 @@
         }
     }
 
-    function find_pages_by_subject_id($subject_id) {
+    function find_pages_by_subject_id($subject_id,$options=[]) {
         global $db;
+
+        //add optional array of attributes to look for
+        $visible = $options['visible'] ?? false;
 
         //Create SQL SELECT and don't forget to put single quotes around query variable ($id)
         $sql = "SELECT * FROM pages ";
-        $sql .= "WHERE subject_id='" . db_escape($db,$subject_id) ."' ";
+        $sql .= "WHERE subject_id='" . db_escape($db,$subject_id) ."'";
+
+        //test if visible is true
+        if ($visible) {
+            $sql .= " AND visible=true ";
+        }
         $sql .= "ORDER BY position ASC";
 
         //Get result set
