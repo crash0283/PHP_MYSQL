@@ -8,32 +8,12 @@ $id = isset($_GET['id']) ? $_GET['id'] : 1;
 //Use function to return subject array
 $subject = find_subject_by_id($id,$db);
 
-//switch ($id) {
-//    case 1:
-//        $page_title = 'About Globe Bank';
-//        break;
-//    case 2:
-//        $page_title = 'Consumer';
-//        break;
-//    case 3:
-//        $page_title = 'Small Business';
-//        break;
-//    case 4:
-//        $page_title = 'Commercial';
-//        break;
-//    default:
-//        $page_title = 'Title Not Found';
-//}
-
-include(PRIVATE_PATH . '/shared/staff_header.php');
-
 ?>
 
-<a href="<?php echo wwwRoot('/staff/subjects/index.php');  ?>">&laquo; Back to List</a>
-
-<div class="content">
-    <div>
-        <div class="subjects show">
+<?php include(SHARED_PATH . '/staff_header.php'); ?>
+<div id="content">
+    <a href="<?php echo wwwRoot('/staff/subjects/index.php'); ?>">&laquo; Back to List</a>
+    <div class="subjects show">
             <h1>Subject: <?php echo h($subject['menu_name']);  ?></h1>
 
             <div class="attributes">
@@ -51,7 +31,6 @@ include(PRIVATE_PATH . '/shared/staff_header.php');
                 </dl>
             </div>
         </div>
-    </div>
 </div>
 
 

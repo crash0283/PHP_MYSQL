@@ -38,6 +38,11 @@ if (is_post_request()) {
 
     if ($result === true) {
         $new_id = mysqli_insert_id($db);
+
+        //Create Session message
+        $message = 'Subject Created Successfully!';
+        $_SESSION['message'] = $message;
+
         redirect_to(wwwRoot('/staff/subjects/show.php?id=' . $new_id));
     } else {
         $errors = $result;

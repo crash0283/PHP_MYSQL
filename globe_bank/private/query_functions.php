@@ -263,7 +263,6 @@
         $query = mysqli_query($db,$sql);
 
         if ($query) {
-            redirect_to(wwwRoot('/staff/pages/index.php'));
             return true;
         } else {
             echo mysqli_error($db);

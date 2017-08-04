@@ -12,9 +12,12 @@
     <meta name="viewport"
           content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <link rel="stylesheet" href="<?php echo wwwRoot('/css/staff.css');  ?>">
-<!--    We are using the page_title php variable that we created in the index.php file-->
+    <!--    We are using the page_title php variable that we created in the index.php file-->
     <title>GBI - <?php echo h($page_title); ?></title>
+    <link rel="stylesheet" type="text/css"  href="<?php echo wwwRoot("/css/staff.css");  ?>">
+    <style>
+
+    </style>
 </head>
 <body>
 <header>
@@ -22,6 +25,10 @@
 </header>
 <nav>
     <ul>
+        <li>Username: <?php echo $_SESSION['username'] ?? ''; ?></li>
         <li><a href="<?php echo wwwRoot('/staff/index.php'); ?>">Menu</a></li>
+        <li><a href="<?php echo wwwRoot('/staff/logout.php'); ?>">Logout</a></li>
     </ul>
 </nav>
+<?php echo display_session_message();  ?>
+

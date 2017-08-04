@@ -23,6 +23,10 @@
 
         if ($result === true) {
             $new_id = mysqli_insert_id($db);
+
+            $message = 'Page Created Successfully!';
+            $_SESSION['message'] = $message;
+
             redirect_to(wwwRoot('/staff/pages/show.php?id=' . $new_id));
         } else {
             $errors = $result;

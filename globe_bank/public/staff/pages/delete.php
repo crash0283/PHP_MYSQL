@@ -9,6 +9,9 @@
 
     if(is_post_request()) {
         delete_page($id);
+        $message = 'Page Deleted Successfully!';
+        $_SESSION['message'] = $message;
+
         redirect_to(wwwRoot('/staff/pages/index.php'));
 
     } else {

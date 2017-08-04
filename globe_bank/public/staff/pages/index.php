@@ -17,7 +17,7 @@
 ?>
 <?php
 //Bring in shared header data
-require(SHARED_PATH . '/staff_header.php');
+include(SHARED_PATH . '/staff_header.php');
 ?>
     <div id="content">
         <div class="pages listing">

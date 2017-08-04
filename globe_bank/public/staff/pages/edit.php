@@ -3,8 +3,6 @@
 ?>
 
 <?php
-    $page_title = 'Edit Page';
-    include(SHARED_PATH . '/staff_header.php');
 
     //Get ID
     $id = $_GET['id'];
@@ -25,6 +23,9 @@
         $result = update_page($page);
 
         if ($result === true) {
+            $message = 'Page Updated Successfully!';
+            $_SESSION['message'] = $message;
+
             redirect_to(wwwRoot('/staff/pages/show.php?id=' . $id));
         } else {
             $errors = $result;
@@ -38,6 +39,9 @@
     $page_set = find_all_pages($db);
     $page_count = mysqli_num_rows($page_set);
     mysqli_free_result($page_set);
+
+    $page_title = 'Edit Page';
+    include(SHARED_PATH . '/staff_header.php');
 
 ?>
 

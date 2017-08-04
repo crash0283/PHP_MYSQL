@@ -12,6 +12,9 @@
     if (is_post_request()) {
         //use function
         delete_subject($id);
+        $message = 'Subject Deleted Successfully!';
+        $_SESSION['message'] = $message;
+
         redirect_to(wwwRoot('/staff/subjects/index.php'));
 
     } else {

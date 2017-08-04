@@ -34,7 +34,9 @@ if (is_post_request()) {
     $result = update_subject($subject);
 
     if ($result === true) {
-        redirect_to(wwwRoot('/staff/subjects/index.php'));
+        $message = 'Subject Updated Successfully!';
+        $_SESSION['message'] = $message;
+        redirect_to(wwwRoot('/staff/subjects/show.php?id=' . $id));
     } else {
         $errors = $result;
 
