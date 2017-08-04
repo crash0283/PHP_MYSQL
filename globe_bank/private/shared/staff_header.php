@@ -15,9 +15,6 @@
     <!--    We are using the page_title php variable that we created in the index.php file-->
     <title>GBI - <?php echo h($page_title); ?></title>
     <link rel="stylesheet" type="text/css"  href="<?php echo wwwRoot("/css/staff.css");  ?>">
-    <style>
-
-    </style>
 </head>
 <body>
 <header>
