@@ -353,7 +353,7 @@
     function validate_admins($admin) {
         $errors = [];
 
-        //first_name,last_name,email,username,password
+        //first_name
         if (is_blank($admin['first_name'])) {
             $errors[] = 'First Name cannot be blank!';
         }
@@ -361,7 +361,7 @@
             $errors[] = 'First Name must be between 2 and 255 characters!';
         }
 
-
+        //last name
         if (is_blank($admin['last_name'])) {
             $errors[] = 'Last Name cannot be blank!';
         }
@@ -369,7 +369,7 @@
             $errors[] = 'Last Name must be between 2 and 255 characters!';
         }
 
-
+        //email
         if (is_blank($admin['email'])) {
             $errors[] = 'Email cannot be blank!';
         }
@@ -377,21 +377,42 @@
             $errors[] = 'Email must be between 2 and 255 characters!';
         }
 
-
+        //username
         if (is_blank($admin['username'])) {
             $errors[] = 'Username cannot be blank!';
         }
         elseif (!has_length($admin['username'],['min'=>2,'max'=>255])) {
             $errors[] = 'Username must be between 2 and 255 characters!';
         }
+        elseif (!has_unique_username($admin['username'], $admin['id'] ?? 0)) {
+            $errors[] = "Username not allowed. Try another.";
+        }
 
 
+        //password
         if (is_blank($admin['password'])) {
             $errors[] = 'Password cannot be blank!';
         }
-        elseif (!has_length($admin['password'],['min'=>2,'max'=>255])) {
-            $errors[] = 'Password must be between 2 and 255 characters!';
+        elseif (!has_length($admin['password'],['min'=>2,'max'=>12])) {
+            $errors[] = 'Password must be between 2 and 12 characters!';
         }
+         elseif (!preg_match('/[A-Z]/', $admin['password'])) {
+            $errors[] = "Password must contain at least 1 uppercase letter";
+        } elseif (!preg_match('/[a-z]/', $admin['password'])) {
+            $errors[] = "Password must contain at least 1 lowercase letter";
+        } elseif (!preg_match('/[0-9]/', $admin['password'])) {
+            $errors[] = "Password must contain at least 1 number";
+        } elseif (!preg_match('/[^A-Za-z0-9\s]/', $admin['password'])) {
+            $errors[] = "Password must contain at least 1 symbol";
+        }
+
+        //confirm password
+        if(is_blank($admin['confirm_password'])) {
+            $errors[] = "Confirm password cannot be blank.";
+        } elseif ($admin['password'] !== $admin['confirm_password']) {
+            $errors[] = "Password and confirm password must match.";
+        }
+
 
         return $errors;
 
