@@ -16,6 +16,7 @@ require(SHARED_PATH . '/staff_header.php');
             <ul>
                 <li><a href="<?php echo wwwRoot('/staff/subjects/index.php'); ?>">Subjects</a>
                 <li><a href="<?php echo wwwRoot('/staff/pages/index.php'); ?>">Pages</a></li>
+                <li><a href="<?php echo wwwRoot('/staff/admins/index.php'); ?>">Admins</a></li>
             </ul>
         </div>
     </div>
