@@ -1,18 +1,48 @@
 <?php
-require_once('../../private/init.php');
+    require_once('../../private/init.php');
 
-$errors = [];
-$username = '';
-$password = '';
+    $errors = [];
+    $username = '';
+    $password = '';
 
-if(is_post_request()) {
+    if(is_post_request()) {
 
-  $username = $_POST['username'] ?? '';
-  $password = $_POST['password'] ?? '';
+      $username = $_POST['username'] ?? '';
+      $password = $_POST['password'] ?? '';
 
-  $_SESSION['username'] = $username;
+      //Validations
+      if (is_blank($username)) {
+          $errors[] = "Username cannot be blank!";
+      }
+      if (is_blank($password)) {
+            $errors[] = "Password cannot be blank!";
+      }
 
-  redirect_to(wwwRoot('/staff/index.php'));
+      //If there were no errors, try to login
+        if (empty($errors)) {
+            $admin = find_admin_by_username($username);
+            //login failure message
+            $login_failure_msg = "Login was unsuccessful!";
+
+            //Check to see if we got back a record
+            if ($admin) {
+                if (password_verify($password,$admin['hashed_password'])) {
+                    //password matches
+                    log_in_admin($admin);
+                    redirect_to(wwwRoot('/staff/index.php'));
+                } else {
+                    //password didn't match
+                    $errors[] = $login_failure_msg;
+                }
+            } else {
+                //username not found
+                $errors[] = $login_failure_msg;
+            }
+        }
+
+
+
+
 }
 
 ?>

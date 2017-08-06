@@ -1,4 +1,5 @@
 <?php require_once('../../../private/init.php') ?>
+<?php require_login(); ?>
 <?php
 
     //Set $subject_set to the function we created in query_functions.php

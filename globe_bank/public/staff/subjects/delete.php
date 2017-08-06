@@ -1,5 +1,6 @@
 <?php
     require_once('../../../private/init.php');
+    require_login();
 
     if (!isset($_GET['id'])) {
         redirect_to(wwwRoot('/staff/subjects/index.php'));

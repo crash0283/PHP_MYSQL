@@ -2,6 +2,9 @@
 //Can't use constant variables for paths here because this is where they are defined
 require_once('../../private/init.php')
 ?>
+
+<?php require_login(); ?>
+
 <?php
 //Can set variables and import them as well to use in other files
 $page_title = 'Staff Menu';

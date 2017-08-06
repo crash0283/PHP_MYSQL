@@ -1,5 +1,6 @@
 <?php
 require_once ('../../../private/init.php');
+require_login();
 ?>
 
 <?php

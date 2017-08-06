@@ -1,7 +1,7 @@
 <?php
 require_once ('../../../private/init.php');
 ?>
-
+<?php require_login(); ?>
 <?php
 $admin_set = find_all_admins();
 

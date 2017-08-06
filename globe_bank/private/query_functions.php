@@ -350,6 +350,29 @@
 
     }
 
+    function find_admin_by_username($username) {
+    global $db;
+
+    $sql = "SELECT * FROM admins ";
+    $sql .= "WHERE username='" . db_escape($db,$username) . "'";
+
+    //Get result set
+    $result = mysqli_query($db,$sql);
+
+    //Error check to make sure we get set back
+    confirm_result_set($result);
+
+    //Get Associative Array
+    $admin = mysqli_fetch_assoc($result);
+
+    //Free data set since it's stored in the $subject variable as an array now
+    mysqli_free_result($result);
+
+    return $admin;
+
+
+}
+
     function validate_admins($admin) {
         $errors = [];
 
@@ -430,7 +453,8 @@
             return $errors;
         }
 
-        $hashed_password = $admin['password'];
+        //password_hash encrypts password
+        $hashed_password = password_hash($admin['password'],PASSWORD_DEFAULT);
 
         $sql = "INSERT INTO admins ";
         $sql .= "(first_name, last_name, email, username, hashed_password) ";
@@ -464,7 +488,8 @@
             return $errors;
         }
 
-        $hashed_password = $admin['password'];
+        //password_hash encrypts password
+        $hashed_password = password_hash($admin['password'],PASSWORD_DEFAULT);
 
         $sql = "UPDATE admins SET ";
         $sql .= "first_name='" . db_escape($db,$admin['first_name']) . "', ";
