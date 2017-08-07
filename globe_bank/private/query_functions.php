@@ -373,8 +373,11 @@
 
 }
 
-    function validate_admins($admin) {
+    function validate_admins($admin,$options=[]) {
         $errors = [];
+
+        $password_checked = $options['password_checked'] ?? true;
+
 
         //first_name
         if (is_blank($admin['first_name'])) {
@@ -411,30 +414,33 @@
             $errors[] = "Username not allowed. Try another.";
         }
 
+        if ($password_checked) {
+            //password
+            if (is_blank($admin['password'])) {
+                $errors[] = 'Password cannot be blank!';
+            }
+            elseif (!has_length($admin['password'],['min'=>2,'max'=>12])) {
+                $errors[] = 'Password must be between 2 and 12 characters!';
+            }
+            elseif (!preg_match('/[A-Z]/', $admin['password'])) {
+                $errors[] = "Password must contain at least 1 uppercase letter";
+            } elseif (!preg_match('/[a-z]/', $admin['password'])) {
+                $errors[] = "Password must contain at least 1 lowercase letter";
+            } elseif (!preg_match('/[0-9]/', $admin['password'])) {
+                $errors[] = "Password must contain at least 1 number";
+            } elseif (!preg_match('/[^A-Za-z0-9\s]/', $admin['password'])) {
+                $errors[] = "Password must contain at least 1 symbol";
+            }
 
-        //password
-        if (is_blank($admin['password'])) {
-            $errors[] = 'Password cannot be blank!';
-        }
-        elseif (!has_length($admin['password'],['min'=>2,'max'=>12])) {
-            $errors[] = 'Password must be between 2 and 12 characters!';
-        }
-         elseif (!preg_match('/[A-Z]/', $admin['password'])) {
-            $errors[] = "Password must contain at least 1 uppercase letter";
-        } elseif (!preg_match('/[a-z]/', $admin['password'])) {
-            $errors[] = "Password must contain at least 1 lowercase letter";
-        } elseif (!preg_match('/[0-9]/', $admin['password'])) {
-            $errors[] = "Password must contain at least 1 number";
-        } elseif (!preg_match('/[^A-Za-z0-9\s]/', $admin['password'])) {
-            $errors[] = "Password must contain at least 1 symbol";
+            //confirm password
+            if(is_blank($admin['confirm_password'])) {
+                $errors[] = "Confirm password cannot be blank.";
+            } elseif ($admin['password'] !== $admin['confirm_password']) {
+                $errors[] = "Password and confirm password must match.";
+            }
         }
 
-        //confirm password
-        if(is_blank($admin['confirm_password'])) {
-            $errors[] = "Confirm password cannot be blank.";
-        } elseif ($admin['password'] !== $admin['confirm_password']) {
-            $errors[] = "Password and confirm password must match.";
-        }
+
 
 
         return $errors;
@@ -483,7 +489,10 @@
     function update_admin($admin) {
         global $db;
 
-        $errors = validate_admins($admin);
+//        $password_sent = !is_blank($admin['password']);
+        $password_checked = $admin['updatePass'] ?? false;
+
+        $errors = validate_admins($admin,["password_checked" => $password_checked]);
         if (!empty($errors)) {
             return $errors;
         }
@@ -495,8 +504,10 @@
         $sql .= "first_name='" . db_escape($db,$admin['first_name']) . "', ";
         $sql .= "last_name='" . db_escape($db,$admin['last_name']) . "', ";
         $sql .= "email='" . db_escape($db,$admin['email']) . "', ";
-        $sql .= "username='" . db_escape($db,$admin['username']) . "', ";
-        $sql .= "hashed_password='" . db_escape($db,$hashed_password) . "' ";
+        if ($password_checked) {
+            $sql .= "hashed_password='" . db_escape($db,$hashed_password) . "', ";
+        }
+        $sql .= "username='" . db_escape($db,$admin['username']) . "' ";
         $sql .= "WHERE id='" . db_escape($db,$admin['id']) . "'";
 
         $result = mysqli_query($db,$sql);

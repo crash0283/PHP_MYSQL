@@ -15,8 +15,10 @@ if (is_post_request()) {
     $admin['last_name'] = $_POST['last_name'] ?? '';
     $admin['email'] = $_POST['email'] ?? '';
     $admin['username'] = $_POST['username'] ?? '';
+    $admin['updatePass'] = $_POST['updatePass'] ?? '';
     $admin['password'] = $_POST['password'] ?? '';
     $admin['confirm_password'] = $_POST['confirm_password'] ?? '';
+
 
     $result = update_admin($admin);
 
@@ -29,6 +31,7 @@ if (is_post_request()) {
     }
 } else {
     $admin = find_admin_by_id($id);
+    $admin['updatePass'] = '';
 }
 
 $page_title = "Edit Admins";
@@ -59,12 +62,16 @@ include(SHARED_PATH . '/staff_header.php');
                 <dd><input type="text" name="username" value="<?php echo h($admin['username']); ?>"></dd>
             </dl>
             <dl>
-                <dt>Password</dt>
-                <dd><input type="password" name="password" value=""></dd>
+                <dt>Update Password?</dt>
+                <dd><input type="checkbox" name="updatePass" id="updatePass" <?php if ($admin['updatePass']) {echo 'checked';} ?>></dd>
             </dl>
             <dl>
-                <dt>Confirm Password</dt>
-                <dd><input type="password" name="confirm_password" value=""></dd>
+                <dt class="passLabels">Password</dt>
+                <dd><input type="password" name="password" id="password" value=""></dd>
+            </dl>
+            <dl>
+                <dt class="passLabels">Confirm Password</dt>
+                <dd><input type="password" name="confirm_password" id="confirm_password" value=""></dd>
             </dl>
             <p>Passwords should be at least 12 characters and include at least one uppercase letter, lowercase letter, number, and symbol.</p>
             <div id="operations">
@@ -73,6 +80,5 @@ include(SHARED_PATH . '/staff_header.php');
         </form>
     </div>
 </div>
-
 <?php require_once(SHARED_PATH . '/staff_footer.php');  ?>
 

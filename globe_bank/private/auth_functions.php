@@ -7,7 +7,7 @@ function log_in_admin($admin) {
 
     $_SESSION['admin_id'] = $admin['id'];
     $_SESSION['last_login'] = time();
-    $_SESSION['username'] = $admin['username'];
+    $_SESSION['first_name'] = $admin['first_name'];
 
 
     return true;
@@ -15,7 +15,7 @@ function log_in_admin($admin) {
 
 //Performs all necessary actions to log out
 function log_out_admin() {
-    unset($_SESSION['username']);
+    unset($_SESSION['first_name']);
     unset($_SESSION['last_login']);
     unset($_SESSION['admin_id']);
 

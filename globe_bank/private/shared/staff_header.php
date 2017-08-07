@@ -24,7 +24,10 @@
 </header>
 <nav>
     <ul>
-        <li>Username: <?php echo $_SESSION['username'] ?? ''; ?></li>
+        <?php
+            $first_name = $_SESSION['first_name'] ?? '';
+            if(is_logged_in())  {echo "<li><strong>Welcome, " . $first_name . "!</strong></li>";}
+        ?>
         <li><a href="<?php echo wwwRoot('/staff/index.php'); ?>">Menu</a></li>
         <li><a href="<?php echo wwwRoot('/staff/logout.php'); ?>">Logout</a></li>
     </ul>
