@@ -254,6 +254,7 @@
         }
 
         $sql = "UPDATE pages SET ";
+        $sql .= "subject_id='" . db_escape($db, $page['subject_id']) . "', ";
         $sql .= "menu_name='" . db_escape($db,$page['menu_name']) . "', ";
         $sql .= "position='" . db_escape($db,$page['position']) . "', ";
         $sql .= "visible='" . db_escape($db,$page['visible']) . "', ";

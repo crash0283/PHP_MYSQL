@@ -38,7 +38,7 @@ include(SHARED_PATH . '/staff_header.php');
             </tr>
             <?php
                 while ($page = mysqli_fetch_assoc($pages_set)) {?>
-                    <?php $subject = find_subject_by_id($page['subject_id'],$db);  ?>
+                    <?php $subject = find_subject_by_id($page['subject_id'],$db); ?>
                     <tr>
                         <td><?php echo h($page['id']); ?></td>
                         <td><?php echo h($subject['menu_name']); ?></td>
